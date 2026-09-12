@@ -43,7 +43,7 @@ The YAML frontmatter controls how and when a skill is invoked:
 | `dev-setup` | `cli-tips`, `statusline` | CLI tool recommendations; statusline install/update |
 | `tailscale-cli` | `tailscale` | Usage of the Tailscale CLI |
 | `worktrees` | `worktree-prep` | Prepares a repo for parallel worktrees; audits shared resources, generates a per-worktree env tool, and documents where the env step fits around Claude Code's `WorktreeCreate` hook |
-| `repo-docs` | `repo-docs-setup` | Sets up CLAUDE.md / ARCHITECTURE.md / TESTING.md / RELEASE.md / HOSTING.md; routes content to the right file, strips brittle values and historical narration, and pushes per-project detail into nested CLAUDE.md files |
+| `repo-docs` | `repo-docs-setup` | Sets up CLAUDE.md / ARCHITECTURE.md / TESTING.md / RELEASE.md / HOSTING.md; routes content to the right file, strips brittle values and historical narration, pushes per-project detail into nested CLAUDE.md files, and sets up `docs/issues/` and `docs/plans/` for repos where agents do the work |
 
 ## Marketplace distribution
 
