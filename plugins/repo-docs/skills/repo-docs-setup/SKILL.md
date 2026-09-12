@@ -1,6 +1,6 @@
 ---
 name: repo-docs-setup
-description: Sets up and maintains the core documentation files of a code repository — CLAUDE.md, ARCHITECTURE.md, TESTING.md, RELEASE.md and HOSTING.md — working out what belongs in each and relocating misplaced content to its proper home. Use this whenever the user wants to document a repo for humans or agents, asks to create or clean up any of these files, says their CLAUDE.md has grown bloated or is being ignored, wants to write down how the codebase is structured, how it gets tested, how a release is cut, or where the app is hosted and how it gets deployed, or asks about onboarding docs, agent instructions, or repo documentation structure — even when they only name one of the five files. Also use it to strip a CLAUDE.md of content that has rotted or will: stale numbers like test counts, coverage percentages and pinned versions; historical narration like migration notes, "we used to use X" and "recently added"; and per-package detail that should be pushed down into a nested CLAUDE.md in that project's own folder.
+description: Sets up and maintains the core documentation files of a code repository — CLAUDE.md, ARCHITECTURE.md, TESTING.md, RELEASE.md and HOSTING.md — working out what belongs in each and relocating misplaced content to its proper home. Use this whenever the user wants to document a repo for humans or agents, asks to create or clean up any of these files, says their CLAUDE.md has grown bloated or is being ignored, wants to write down how the codebase is structured, how it gets tested, how a release is cut, or where the app is hosted and how it gets deployed, or asks about onboarding docs, agent instructions, or repo documentation structure — even when they only name one of the five files. Also use it to strip a CLAUDE.md of content that has rotted or will: stale numbers like test counts, coverage percentages and pinned versions; historical narration like migration notes, "we used to use X" and "recently added"; and per-package detail that should be pushed down into a nested CLAUDE.md in that project's own folder. Also covers keeping issues and plans in the repo as markdown instead of a tracker — docs/issues/ with one file per problem moving from open/ to closed/, and docs/plans/ with a phased plan, feature memory and per-run reports for each feature — which is what to reach for when work spans several agent sessions, when findings get lost between runs, or when the user asks where agents should write down a problem they are not fixing now.
 allowed-tools: Read, Glob, Grep, Bash, Write, Edit, AskUserQuestion
 metadata:
   category: documentation
@@ -11,6 +11,8 @@ metadata:
 Five documents carry a repository's working knowledge: `CLAUDE.md`, `ARCHITECTURE.md`, `TESTING.md`, `RELEASE.md`, `HOSTING.md`. This skill works out which of them a given repo needs, what goes in each, and what should be pulled out into somewhere else entirely.
 
 Most repos don't warrant all five. Deciding which to skip is as much of the job as writing the ones that stay.
+
+A repo where agents do the work usually needs one thing more. The five documents all describe the repository as it is; a problem nobody is fixing yet and work that hasn't been built yet fit none of them, and in a tracker they sit where an agent can't grep them. `references/issues-and-plans.md` covers keeping both in `docs/` as markdown, and step 2 says when to propose it.
 
 ## Why the split exists
 
@@ -65,6 +67,8 @@ A stub file nobody maintains is worse than no file: it looks authoritative and g
 
 `RELEASE.md` and `HOSTING.md` are commonly confused, and a repo can warrant either, both, or neither. The split is that a release makes a version *exist*; hosting is where it *runs* and how it gets there. A library published to npm has releases and no hosting. A web app on continuous deploy has hosting and, often, no release process worth documenting — merging is the whole ceremony. If a single pipeline genuinely covers both, write one file under whichever name the team uses and link across from the other rather than splitting a process nobody experiences as two things. `references/hosting-md.md` has the full boundary table.
 
+Then decide separately whether the repo warrants `docs/issues/` and `docs/plans/`. These aren't documents about the repo, so they aren't in the table above and they aren't skipped or kept for the same reasons. Propose them when agents do a meaningful share of the work, and especially when more than one session works on the same codebase. The signals are a `CLAUDE.md` that already tells agents to write findings down somewhere, work that spans sessions, parallel worktrees, planning notes accumulating loose in `docs/`, or the user saying problems get lost between sessions. Skip them when a human does all the work and already has a tracker. When the repo has both a tracker and agents, ask which is authoritative rather than assuming — `references/issues-and-plans.md` has the structure and the usual split.
+
 If a repo doesn't warrant a file, say why rather than silently omitting it — the user may know about a release or deploy process that leaves no trace in the repo. Hosting especially: it's the one most likely to live in a separate infra repo or entirely in a platform dashboard, so absence of evidence here is weak evidence of absence. Ask rather than concluding.
 
 ### 3. Triage what's already there
@@ -115,6 +119,7 @@ Show the user, briefly:
 - which of the five files you'll create or edit, and which you're skipping with the reason
 - what you'll move *out* of any existing `CLAUDE.md`, and where each piece is going
 - which per-project `CLAUDE.md` files you'll create, and what moves down into each
+- whether you're setting up `docs/issues/` and `docs/plans/`, and what existing notes move into them
 - anything you plan to delete outright (with justification — see the table)
 - what you couldn't determine and will mark TODO
 
@@ -129,7 +134,10 @@ Read the reference for each file as you write it. They contain the section-by-se
 - `references/testing-md.md` — test layers per project, where tests live, how to run them, and the post-change smoke test
 - `references/release-md.md` — versioning, the release command sequence, changelog policy, artifacts, hotfix and rollback
 - `references/hosting-md.md` — environments, what runs where, provisioning, deploy triggers, config and secrets, rollback; and the boundary with `RELEASE.md`
+- `references/issues-and-plans.md` — `docs/issues/` and `docs/plans/`: when they're warranted, how a file moves through each, phases and dependencies, and the few lines that wire them into `CLAUDE.md`
 - `references/elsewhere.md` — where content goes when it belongs in none of the five (ADRs, `CONTRIBUTING.md`, path-scoped rules, skills, runbooks, module READMEs)
+
+For `docs/issues/` and `docs/plans/`, copy the templates from `assets/` rather than writing them fresh — `issue-template.md`, `plan-template.md`, `memory-template.md`, `report-template.md`. Adapt the parts that name this repo's components (an issue's **Area** line, the paths in a memory's file table) and leave the headings alone. Write each folder's `README.md` yourself, in the repo's voice, saying what belongs there and how a file moves through.
 
 Match the repo's existing documentation voice and formatting where it has one.
 
@@ -173,6 +181,12 @@ This is the core of the skill: given a piece of knowledge, where does it live?
 | Environments that secretly share a database, cache or account | `HOSTING.md` | Nothing in the code reveals it; costs an incident to learn |
 | How to roll back what's serving traffic | `HOSTING.md` | Read under pressure; distinct from un-publishing a version |
 | Env var and secret *names*, and where they're configured | `HOSTING.md` (or `RELEASE.md` for publish-time ones) | Names and locations only — never values |
+| A problem in this project that nobody is fixing right now | `docs/issues/open/`, one file per problem | Greppable, branchable, and closable in the same commit as the fix |
+| What that problem turned out to be, once it's fixed | The same file, moved to `docs/issues/closed/` | The location is the status, and links to it survive |
+| What will be built, in what order, and what proves each step done | `docs/plans/<slug>.md` | Written before the work and left as written; the five documents describe what exists |
+| Facts every session working on one feature needs | `docs/plans/memory/<slug>.md` | Loaded by each session on that feature and nobody else |
+| What one run actually did, verified, and left undone | `docs/plans/reports/<slug>/<date>-<what>.md` | A dated record of a run, never updated afterwards |
+| Flaky tests, slow builds, friction that is nobody's feature | A run's report under `docs/plans/reports/` | Otherwise never written down anywhere, because it's nobody's bug either |
 | Incident response, on-call, backup and restore | `docs/runbooks/` | Different reader, different urgency than routine deploys |
 | Why a design decision was made, alternatives rejected | `docs/adr/NNNN-*.md` | Decisions are dated records; architecture is current state |
 | PR process, commit format, code review expectations | `CONTRIBUTING.md` | Aimed at contributors, not at agents mid-task |

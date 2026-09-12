@@ -49,6 +49,20 @@
       "prompt": "we're a vercel app, merge to main and it's live, that's it. there's no versioning or tags or anything. should i have a RELEASE.md?",
       "expected_output": "Answers no rather than generating a plausible RELEASE.md: with no tags, no registry and no versioning, there is no release process to document, and merging is the whole ceremony. Explains the distinction — a release makes a version exist, hosting is where it runs and how it gets there — and proposes HOSTING.md as the file this repo actually warrants. Does not invent a semver or tagging scheme to justify the file. Notes that Vercel holds config the repo does not, so parts of HOSTING.md will need confirming from the dashboard. Still does the work if the user reaffirms wanting a RELEASE.md.",
       "files": []
+    },
+    {
+      "id": 7,
+      "name": "issues-and-plans-for-agent-repo",
+      "prompt": "i've got claude sessions working on this repo all day and stuff keeps getting lost - an agent finds a bug, mentions it in chat, and it's gone by the next session. same with bigger features, every run starts from scratch. can you sort the docs out",
+      "expected_output": "Recognises this as the case docs/issues/ and docs/plans/ exist for rather than only tidying the five core documents. Proposes docs/issues/ with one file per problem named after the problem in kebab case, open/ and closed/ as the status, and a TEMPLATE.md copied to start one; and docs/plans/ with a slug per feature joining the plan, memory/<slug>.md and reports/<slug>/. Copies the templates from assets/ and adapts the repo-specific parts (an issue's Area line) rather than inventing new headings. Adds a few lines to CLAUDE.md pointing at the paths without inlining the templates, and does not list the open issues anywhere. Confirms the structure before writing.",
+      "files": []
+    },
+    {
+      "id": 8,
+      "name": "tracker-already-exists",
+      "prompt": "add a docs/issues folder like you did for my other repo. we use linear for everything, whole team lives in it",
+      "expected_output": "Asks which source is authoritative rather than silently creating a second one, and names the usual split (the tracker holds what users and stakeholders reported, docs/issues/ holds what agents find while working) as an option rather than a default. Points out that two sources of truth need a rule for keeping them in step and that nothing enforces one. Still sets it up if the user reaffirms, and in that case writes the split into docs/issues/README.md so the boundary is stated where someone filing an issue will read it.",
+      "files": []
     }
   ]
 }

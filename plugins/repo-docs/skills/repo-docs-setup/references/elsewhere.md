@@ -35,6 +35,14 @@ Status: Accepted (supersedes 0004)
 <What this makes easy, what it makes hard, what it commits us to.>
 ```
 
+## `docs/issues/` and `docs/plans/`
+
+A problem nobody is fixing yet, and work that hasn't been built yet. Neither describes the repository as it is, so neither fits any of the five, and both are awkward in a tracker once agents do the work — an agent reaching a tracker needs a network call and a configured tool, and gets back something it cannot grep.
+
+`docs/issues/` holds one file per problem, moving from `open/` to `closed/` under the same filename. `docs/plans/` holds one phased plan per feature slug, with the facts every session shares in `memory/<slug>.md` and what each run actually did in `reports/<slug>/`.
+
+`references/issues-and-plans.md` has the full structure, when it's warranted, and the templates in `assets/`.
+
 ## `CONTRIBUTING.md`
 
 Aimed at people contributing, not at agents mid-task: PR process, commit message convention, review expectations, DCO/CLA, how to get a dev environment up, code of conduct pointer. Overlaps `TESTING.md` and `RELEASE.md` at the edges — cross-link rather than duplicate, and let each fact live in exactly one place.
