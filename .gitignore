@@ -4,3 +4,7 @@ __pycache__/
 
 # skill-creator eval workspaces
 /worktree-prep-workspace/
+
+# local-only turret skills
+/.claude/skills/turret-feature-plan/
+/.claude/skills/turret-feature-orchestrate/
