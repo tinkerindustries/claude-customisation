@@ -9,7 +9,7 @@ Drop-in plugins that extend what Claude Code can do. Each plugin is focused on a
 ### `security` — Security Review
 
 ```
-/plugin marketplace add mrgeoffrich/claude-customisation
+/plugin marketplace add tinkerindustries/claude-customisation
 /plugin install security@mrgeoffrich
 ```
 
@@ -18,7 +18,7 @@ Drop-in plugins that extend what Claude Code can do. Each plugin is focused on a
 ### `web-dev` — Web Development
 
 ```
-/plugin marketplace add mrgeoffrich/claude-customisation
+/plugin marketplace add tinkerindustries/claude-customisation
 /plugin install web-dev@mrgeoffrich
 ```
 
@@ -27,7 +27,7 @@ Drop-in plugins that extend what Claude Code can do. Each plugin is focused on a
 ### `gws-skills` — Google Workspace
 
 ```
-/plugin marketplace add mrgeoffrich/claude-customisation
+/plugin marketplace add tinkerindustries/claude-customisation
 /plugin install gws-skills@mrgeoffrich
 ```
 
@@ -36,7 +36,7 @@ Drop-in plugins that extend what Claude Code can do. Each plugin is focused on a
 ### `sandbox` — Docker Sandbox Launcher
 
 ```
-/plugin marketplace add mrgeoffrich/claude-customisation
+/plugin marketplace add tinkerindustries/claude-customisation
 /plugin install sandbox@mrgeoffrich
 ```
 
@@ -45,7 +45,7 @@ Drop-in plugins that extend what Claude Code can do. Each plugin is focused on a
 ### `dev-setup` — Developer Setup
 
 ```
-/plugin marketplace add mrgeoffrich/claude-customisation
+/plugin marketplace add tinkerindustries/claude-customisation
 /plugin install dev-setup@mrgeoffrich
 ```
 

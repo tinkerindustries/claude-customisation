@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this repo is
 
-A public collection of Claude Code plugins distributed via the marketplace as `mrgeoffrich/claude-customisation`. There is no build system, no package manager, and no test runner — skills are prompt-based Markdown files, not compiled code.
+A public collection of Claude Code plugins distributed via the marketplace as `tinkerindustries/claude-customisation`. There is no build system, no package manager, and no test runner — skills are prompt-based Markdown files, not compiled code.
 
 ## Plugin architecture
 
@@ -50,7 +50,7 @@ The YAML frontmatter controls how and when a skill is invoked:
 `.claude-plugin/marketplace.json` registers this repo as the `mrgeoffrich` marketplace publisher. Users install plugins via:
 
 ```
-/plugin marketplace add mrgeoffrich/claude-customisation#plugins/<name>
+/plugin marketplace add tinkerindustries/claude-customisation#plugins/<name>
 /plugin install <name>@mrgeoffrich
 ```
 
