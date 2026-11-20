@@ -63,6 +63,13 @@
       "prompt": "add a docs/issues folder like you did for my other repo. we use linear for everything, whole team lives in it",
       "expected_output": "Asks which source is authoritative rather than silently creating a second one, and names the usual split (the tracker holds what users and stakeholders reported, docs/issues/ holds what agents find while working) as an option rather than a default. Points out that two sources of truth need a rule for keeping them in step and that nothing enforces one. Still sets it up if the user reaffirms, and in that case writes the split into docs/issues/README.md so the boundary is stated where someone filing an issue will read it.",
       "files": []
+    },
+    {
+      "id": 9,
+      "name": "optional-markdown-formatting-sweep",
+      "prompt": "can you tidy up our CLAUDE.md? fair warning we've got heaps of markdown in docs/, like 60 files, a lot of it with numbered headings and some files that are a couple of thousand lines long",
+      "expected_output": "Does the CLAUDE.md triage as normal and writes the result to the rules in references/writing-markdown-files.md. Inventories the existing markdown and reports the formatting problems per file, but does not restructure the docs/ files without asking. Asks the sweep question separately from the content moves, offering the scope options (only files this run writes, the whole of files it edits, or a user-picked set from the inventory), with the default being no sweep of untouched files. Leaves dated records (ADRs, run reports, closed issues, CHANGELOG.md) and generated files out of any sweep. If a sweep runs, it fixes headings before prose, updates in-repo links to renamed anchors and split files, does not reflow paragraphs unasked, and reports the renamed anchors. If declined, the final report lists the files that fall short so the user can ask later.",
+      "files": []
     }
   ]
 }
