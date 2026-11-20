@@ -1,6 +1,6 @@
 ---
 name: repo-docs-setup
-description: Sets up and maintains the core documentation files of a code repository — CLAUDE.md, ARCHITECTURE.md, TESTING.md, RELEASE.md and HOSTING.md — working out what belongs in each and relocating misplaced content to its proper home. Use this whenever the user wants to document a repo for humans or agents, asks to create or clean up any of these files, says their CLAUDE.md has grown bloated or is being ignored, wants to write down how the codebase is structured, how it gets tested, how a release is cut, or where the app is hosted and how it gets deployed, or asks about onboarding docs, agent instructions, or repo documentation structure — even when they only name one of the five files. Also use it to strip a CLAUDE.md of content that has rotted or will: stale numbers like test counts, coverage percentages and pinned versions; historical narration like migration notes, "we used to use X" and "recently added"; and per-package detail that should be pushed down into a nested CLAUDE.md in that project's own folder. Also covers keeping issues and plans in the repo as markdown instead of a tracker — docs/issues/ with one file per problem moving from open/ to closed/, and docs/plans/ with a phased plan, feature memory and per-run reports for each feature — which is what to reach for when work spans several agent sessions, when findings get lost between runs, or when the user asks where agents should write down a problem they are not fixing now.
+description: Sets up and maintains the core documentation files of a code repository — CLAUDE.md, ARCHITECTURE.md, TESTING.md, RELEASE.md and HOSTING.md — working out what belongs in each and relocating misplaced content to its proper home. Use this whenever the user wants to document a repo for humans or agents, asks to create or clean up any of these files, says their CLAUDE.md has grown bloated or is being ignored, wants to write down how the codebase is structured, how it gets tested, how a release is cut, or where the app is hosted and how it gets deployed, or asks about onboarding docs, agent instructions, or repo documentation structure — even when they only name one of the five files. Also use it to strip a CLAUDE.md of content that has rotted or will: stale numbers like test counts, coverage percentages and pinned versions; historical narration like migration notes, "we used to use X" and "recently added"; and per-package detail that should be pushed down into a nested CLAUDE.md in that project's own folder. Also covers keeping issues and plans in the repo as markdown instead of a tracker — docs/issues/ with one file per problem moving from open/ to closed/, and docs/plans/ with a phased plan, feature memory and per-run reports for each feature — which is what to reach for when work spans several agent sessions, when findings get lost between runs, or when the user asks where agents should write down a problem they are not fixing now. Also covers formatting markdown so agents can navigate it with grep (unique headings, no skipped levels, tables of contents, section length, splitting long files), including an optional sweep that brings a repo's existing markdown up to those rules.
 allowed-tools: Read, Glob, Grep, Bash, Write, Edit, AskUserQuestion
 metadata:
   category: documentation
@@ -50,6 +50,7 @@ Read before you write. You are looking for evidence, not impressions.
 - **Releases**: `git tag --sort=-creatordate | head -20`, `git log --oneline -30` (do commits follow Conventional Commits?), release automation config (`release-please-config.json`, `.releaserc`, `.changeset/`, `cliff.toml`, `semantic-release` in devDeps), publish steps in CI, `CHANGELOG.md` format.
 - **Hosting**: platform config (`vercel.json`, `netlify.toml`, `fly.toml`, `render.yaml`, `railway.json`, `app.yaml`, `Procfile`, `wrangler.toml`/`.jsonc`), infrastructure as code (`*.tf`, `terraform/`, CDK app, `template.yaml`, `serverless.yml`, `*.bicep`, Pulumi), container and orchestration config (`Dockerfile`, `docker-compose.prod.yml`, `k8s/`, `helm/`, `kustomization.yaml`), deploy jobs in CI and their `environment:` keys, `.env.example`. Also check whether `README.md` links to a dashboard or a separate infra repo — hosting is the one subject that routinely lives outside the repo entirely.
 - **Existing docs**: `README.md`, `CLAUDE.md`, `AGENTS.md`, `CONTRIBUTING.md`, `docs/`, `.claude/rules/`, `.cursorrules`, `.github/copilot-instructions.md`.
+- **Markdown tooling and volume**: a markdown linter or formatter config (`.markdownlint*`, `.remarkrc*`, Prettier's `proseWrap`), a docs site generator, and roughly how much markdown the repo holds (`git ls-files '*.md' | xargs wc -l | sort -n`). The tooling overrides the formatting rules in `references/writing-markdown-files.md`. The volume decides whether a formatting sweep is worth offering in step 5.
 
 For a large repo, sample rather than exhaustively read — the goal is a correct coarse-grained picture, not a complete one.
 
@@ -81,6 +82,8 @@ Sweep the same pass for the two things that rot in place rather than sitting in 
 - **Historical narration.** Anything phrased as *what changed* rather than *what is* — migrations, rewrites, "recently", "we used to", "as of v2". Rewrite it in the present tense or cut it.
 
 Both are easy to miss because they read as informative rather than as clutter, and neither shows up as a section you'd think to move.
+
+Note formatting problems too, against `references/writing-markdown-files.md`: skipped heading levels, numbered or duplicate headings, files past a few hundred lines. Don't fix them in this pass. They feed the optional sweep in step 5.
 
 Note also that Claude Code reads `CLAUDE.md`, not `AGENTS.md`. If the repo has `AGENTS.md` and no `CLAUDE.md`, don't duplicate the content — create a `CLAUDE.md` whose first line is `@AGENTS.md`, then add Claude-specific content beneath it.
 
@@ -121,7 +124,10 @@ Show the user, briefly:
 - which per-project `CLAUDE.md` files you'll create, and what moves down into each
 - whether you're setting up `docs/issues/` and `docs/plans/`, and what existing notes move into them
 - anything you plan to delete outright (with justification — see the table)
+- whether to sweep existing markdown into line with `references/writing-markdown-files.md` (see below)
 - what you couldn't determine and will mark TODO
+
+Ask the formatting sweep question separately from the content moves, because the user can want one without the other. Offer three scopes: only the files this run writes (the default), also the whole of every existing file this run edits, or a sweep of the existing markdown files the user picks from the inventory. In a repo with a lot of markdown a full sweep is a large diff, so never start one without a yes. If the triage found few formatting problems, say so and skip the question.
 
 Get agreement before writing. Moving someone's documentation around without asking is the kind of change that's annoying to undo. If there's a genuine fork — say, the repo has both a `Makefile` and npm scripts and you can't tell which is canonical — ask.
 
@@ -136,14 +142,17 @@ Read the reference for each file as you write it. They contain the section-by-se
 - `references/hosting-md.md` — environments, what runs where, provisioning, deploy triggers, config and secrets, rollback; and the boundary with `RELEASE.md`
 - `references/issues-and-plans.md` — `docs/issues/` and `docs/plans/`: when they're warranted, how a file moves through each, phases and dependencies, and the few lines that wire them into `CLAUDE.md`
 - `references/elsewhere.md` — where content goes when it belongs in none of the five (ADRs, `CONTRIBUTING.md`, path-scoped rules, skills, runbooks, module READMEs)
+- `references/writing-markdown-files.md` — headings, tables of contents, section bodies, tables and file splitting, so the result can be navigated with grep; applies to every file you write, and covers the optional sweep of existing files
 
 For `docs/issues/` and `docs/plans/`, copy the templates from `assets/` rather than writing them fresh — `issue-template.md`, `plan-template.md`, `memory-template.md`, `report-template.md`. Adapt the parts that name this repo's components (an issue's **Area** line, the paths in a memory's file table) and leave the headings alone. Write each folder's `README.md` yourself, in the repo's voice, saying what belongs there and how a file moves through.
 
-Match the repo's existing documentation voice and formatting where it has one.
+Match the repo's existing documentation voice. For formatting, follow `references/writing-markdown-files.md`, except where the repo's markdown linter, formatter or docs site generator requires something else.
+
+If the user opted into a formatting sweep, do it after the content work, in the order the reference gives, and only across the files they picked.
 
 ### 7. Report
 
-State what was written, what moved where — including anything pushed down into a per-project `CLAUDE.md` — and the list of gaps you marked TODO. Suggest `/init` afterwards only if a `CLAUDE.md` didn't previously exist and the user wants Claude's own read on it.
+State what was written, what moved where — including anything pushed down into a per-project `CLAUDE.md` — and the list of gaps you marked TODO. If a formatting sweep ran, list the files it changed and any heading anchors it renamed, since links from outside the repo may point at them. If the user declined the sweep, list the existing files that fall short of `references/writing-markdown-files.md` and the main problem in each, so they can ask for the sweep later. Suggest `/init` afterwards only if a `CLAUDE.md` didn't previously exist and the user wants Claude's own read on it.
 
 ## Placement table
 
