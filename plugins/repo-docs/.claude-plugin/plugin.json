@@ -1,7 +1,7 @@
 {
   "name": "repo-docs",
-  "version": "0.5.0",
-  "description": "Set up and maintain a repository's documentation: CLAUDE.md, ARCHITECTURE.md, TESTING.md, RELEASE.md and HOSTING.md, plus issues and plans kept in the repo as markdown",
+  "version": "0.6.0",
+  "description": "Set up and maintain a repository's documentation: repo-docs-simple for CLAUDE.md, ARCHITECTURE.md, TESTING.md, RELEASE.md, HOSTING.md and in-repo issues and plans; repo-docs-large adds decisions, design, design-phases, features, advisories, help and reports under docs/",
   "author": {
     "name": "Geoffrey Rich"
   }

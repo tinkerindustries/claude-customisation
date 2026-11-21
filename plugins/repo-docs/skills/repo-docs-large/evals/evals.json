@@ -1,0 +1,40 @@
+{
+  "skill_name": "repo-docs-large",
+  "evals": [
+    {
+      "id": 0,
+      "name": "full-structure-ui-app",
+      "prompt": "This is our desktop + mobile app and the docs are a mess. I want the full docs setup: decisions, design docs, feature requests, help for users, the lot. Agents do most of the coding here across a bunch of worktrees.",
+      "expected_output": "Reads repo-docs-simple's SKILL.md first and follows its workflow for the five core files, issues and plans. Surveys for evidence of each larger folder (UI catalogue, mockups, ADRs, TODO lists, dependabot config, docs site). Proposes which folders to create and which to skip with reasons, asks separately about the help pipeline, and confirms before writing. Writes each folder's README and copies the templates from assets/. Decision files are slug-named with no numbers. docs/README.md lists only folders that exist. CLAUDE.md gains a short 'Writing docs and raising work' section with plain links. Does not write help pages or design documents from scratch, and lists them as follow-up work.",
+      "files": []
+    },
+    {
+      "id": 1,
+      "name": "history-in-architecture-to-decisions",
+      "prompt": "ARCHITECTURE.md has turned into a diary. Half of it is 'we moved off Redux because...' and 'we tried SSE first but...'. Can you clean that up with the bigger docs structure?",
+      "expected_output": "Classifies each historical paragraph. Each choice with a reason becomes a file under docs/decisions/ named after the decision, with Why and What it costs headings, and the current rule stays in ARCHITECTURE.md as one line linking to it. Paragraphs with no recorded reason become decisions whose Why is marked TODO rather than invented. Pure event narration with no live choice is cut, since git history holds it. Updates inbound links and reports every move.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "name": "dismissed-dependabot-alerts",
+      "prompt": "We've dismissed a few dependabot alerts over time as 'tolerable risk' with no explanation. Where should the reasoning live, and can you set it up?",
+      "expected_output": "Sets up docs/advisories/ with a README and one file per package from assets/advisory-template.md, covering every required heading (advisories, where it comes from, what the caller does with it, remedies, decision with dismissal text, what would change this). Uses the package manager's why command to trace paths. Writes 'Unknown' or TODO where the caller's input cannot be established from the code. Does not dismiss or reopen any alert itself, and leaves the dismissal text for the owner.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "name": "cli-library-pushback",
+      "prompt": "use the large docs setup on this repo please. it's a small rust CLI library, no UI, published to crates.io",
+      "expected_output": "Follows the simple workflow for the core files. Pushes back on folders with nothing to hold: no design/ or design-phases/ for a project with no UI, no help/ unless the user says it has end users beyond its README, no archive/ created empty. Proposes decisions/ and asks about features/, advisories/ and reports/ based on what the survey finds. Says why each skipped folder is skipped and asks before creating any of them anyway.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "name": "design-doc-updated-after-build",
+      "prompt": "our docs/design/onboarding.md was written before we built onboarding and people have been editing it since with 'UPDATE: we ended up doing X instead' notes. it's confusing. what should happen to it?",
+      "expected_output": "Explains the split between docs/design/ (current, no history) and docs/design-phases/ (frozen record). Proposes recovering the original text from git history into docs/design-phases/onboarding.md with the record banner, rewriting docs/design/onboarding.md to state the current design in the present tense, and moving each 'we ended up doing X' reason into a decision file. Asks before splitting.",
+      "files": []
+    }
+  ]
+}
