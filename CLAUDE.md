@@ -43,7 +43,7 @@ The YAML frontmatter controls how and when a skill is invoked:
 | `dev-setup` | `cli-tips`, `statusline` | CLI tool recommendations; statusline install/update |
 | `tailscale-cli` | `tailscale` | Usage of the Tailscale CLI |
 | `worktrees` | `worktree-prep` | Prepares a repo for parallel worktrees; audits shared resources, generates a per-worktree env tool, and documents where the env step fits around Claude Code's `WorktreeCreate` hook |
-| `repo-docs` | `repo-docs-setup` | Sets up CLAUDE.md / ARCHITECTURE.md / TESTING.md / RELEASE.md / HOSTING.md; routes content to the right file, strips brittle values and historical narration, pushes per-project detail into nested CLAUDE.md files, sets up `docs/issues/` and `docs/plans/` for repos where agents do the work, and formats markdown for grep-based navigation with an optional sweep of existing files |
+| `repo-docs` | `repo-docs-simple`, `repo-docs-large` | `repo-docs-simple` sets up CLAUDE.md / ARCHITECTURE.md / TESTING.md / RELEASE.md / HOSTING.md, routes content to the right file, strips brittle values and historical narration, pushes per-project detail into nested CLAUDE.md files, sets up `docs/issues/` and `docs/plans/`, and formats markdown for grep-based navigation. `repo-docs-large` follows the simple skill's workflow and adds `docs/decisions/`, `design/`, `design-phases/`, `features/`, `advisories/`, `help/`, `reports/`, `reference/`, `runbooks/`, `external/`, `archive/` and `DEPENDENCIES.md` |
 
 ## Marketplace distribution
 
